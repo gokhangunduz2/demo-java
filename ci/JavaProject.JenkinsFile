@@ -8,7 +8,7 @@ pipeline {
         stage('Chekout') {
             steps {
                 cleanWs()
-                checkout scmGit(branches: [[name: "$branch_name"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ada88/demo-java-project.git']])
+                checkout scmGit(branches: [[name: "$branch_name"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/gokhangunduz2/demo-java.git']])
             }
         }
         stage('Build') {
@@ -17,34 +17,15 @@ pipeline {
                     pwd
                     ls -ltr
                     echo "Build step started"
-                    export PATH="$PATH:/opt/gradle/gradle-7.6/bin"
-
-                    gradle build
-
+		    def commit = env.GIT_COMMIT.take(7)
+		    docker build -t autoPipeapp:${commit} -f ci/Dockerfile .	    
+                    docker tag autoPipeapp:${commit} autoPipeapp:latest
+		    docker push autoPipeapp:${commit}
+		    docker push autoPipeapp:latest
                     echo "Build step completed successfully. Next step is Test ...."
                 '''
             }
         }
-        stage('Test') {
-            steps {
-                sh '''
-                    echo "Checking jar file"
-                    cd build/libs
-                    ls -ltr
-
-                    mv demo-0.0.1-SNAPSHOT.jar demo-0.0.1-SNAPSHOT-${BUILD_NUMBER}.jar
-                    rm demo-0.0.1-SNAPSHOT-plain.jar
-
-                    cp *.jar /ArchivedPackages
-
-                    nohup java -jar demo-0.0.1-SNAPSHOT-${BUILD_NUMBER}.jar &
-                    sleep 30
-
-                    echo "Test step completed successfully"
-                '''
-            }
-        }
-        
     }
     post {
         always {
