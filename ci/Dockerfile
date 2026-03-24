@@ -6,7 +6,7 @@ COPY .. .
 
 RUN gradle build
 
-FROM openjdk17
+FROM openjdk:17
 
 WORKDIR /app
 
