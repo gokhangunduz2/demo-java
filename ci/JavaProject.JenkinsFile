@@ -16,8 +16,8 @@ pipeline {
                     pwd
                     ls -ltr
                     echo "Build step started"
-		    		def commit = env.GIT_COMMIT.take(7)
-		    		docker build -t autoPipeapp:${commit} -f ci/Dockerfile .	    
+		    		commit=$(git rev-parse --short HEAD)
+		    		docker build -t autoPipeapp:$commit -f ci/Dockerfile .	    
                     docker tag autoPipeapp:${commit} autoPipeapp:latest
 		    		docker push autoPipeapp:${commit}
 		    		docker push autoPipeapp:latest
