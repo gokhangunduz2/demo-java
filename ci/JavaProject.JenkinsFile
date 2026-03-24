@@ -12,14 +12,15 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+					#!/bin/bash
                     pwd
                     ls -ltr
                     echo "Build step started"
-		    def commit = env.GIT_COMMIT.take(7)
-		    docker build -t autoPipeapp:${commit} -f ci/Dockerfile .	    
+		    		def commit = env.GIT_COMMIT.take(7)
+		    		docker build -t autoPipeapp:${commit} -f ci/Dockerfile .	    
                     docker tag autoPipeapp:${commit} autoPipeapp:latest
-		    docker push autoPipeapp:${commit}
-		    docker push autoPipeapp:latest
+		    		docker push autoPipeapp:${commit}
+		    		docker push autoPipeapp:latest
                     echo "Build step completed successfully. Next step is Test ...."
                 '''
             }
