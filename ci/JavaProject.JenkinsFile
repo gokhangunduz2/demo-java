@@ -3,12 +3,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Chekout') {
-            steps {
-                cleanWs()
-                checkout scmGit(branches: [[name: "$branch_name"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/gokhangunduz2/demo-java.git']])
-            }
-        }
+		stage('Checkout') {
+		    steps {
+		        cleanWs()
+		        git branch: "${branch_name}", url: 'https://github.com/gokhangunduz2/demo-java.git'
+		    }
+		}
         stage('Build') {
             steps {
                 sh '''
