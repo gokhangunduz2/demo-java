@@ -14,3 +14,6 @@ WORKDIR /app
 
 RUN ls -ltra
 
+COPY --from=builder /build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
+
+CMD ["java", "-jdk", "app.jdk"]
