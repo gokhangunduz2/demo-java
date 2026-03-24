@@ -6,6 +6,8 @@ COPY .. .
 
 RUN gradle build
 
+RUN ls -ltra
+
 FROM eclipse-temurin:17
 
 WORKDIR /app
