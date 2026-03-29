@@ -2,22 +2,19 @@ FROM gradle:8-jdk17 AS builder
 
 WORKDIR /app
 
-COPY .. .
+COPY . .
 
 RUN gradle build
 
-RUN ls -ltra
+# debug
+RUN ls -ltra build/libs
 
 FROM eclipse-temurin:17
 
 WORKDIR /app
 
-RUN cd build
-
-RUN cd libs
+COPY --from=builder /app/build/libs/*SNAPSHOT.jar app.jar
 
 RUN ls -ltra
 
-COPY --from=builder /build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
-
-CMD ["java", "-jdk", "app.jdk"]
+CMD ["java", "-jar", "app.jar"]
