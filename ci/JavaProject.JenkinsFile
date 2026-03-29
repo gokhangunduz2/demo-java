@@ -17,10 +17,10 @@ pipeline {
                     ls -ltr
                     echo "Build step started"
 		    commit=$(git rev-parse --short HEAD)
-		    docker build -t autopipeapp:$commit -f ci/Dockerfile .	    
-                    docker tag autopipeapp:${commit} autopipeapp:latest
-		    docker push autopipeapp:${commit}
-		    docker push autopipeapp:latest
+		    docker build -t gokhangunduz1/autopipeapp:$commit -f ci/Dockerfile .	    
+                    docker tag gokhangunduz1/autopipeapp:${commit} gokhangunduz1/autopipeapp:latest
+		    docker push gokhangunduz1/autopipeapp:${commit}
+		    docker push gokhangunduz1/autopipeapp:latest
                     echo "Build step completed successfully. Next step is Test ...."
                 '''
             }
